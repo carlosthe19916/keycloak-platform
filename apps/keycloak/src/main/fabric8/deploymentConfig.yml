@@ -1,7 +1,7 @@
 metadata:
   annotations:
-    configmap.openfact.io/update-on-change: "keycloak"
-    openfact.io/target-platform: "openshift"
+    configmap.keycloak.io/update-on-change: "keycloak"
+    keycloak.io/target-platform: "openshift"
 spec:
   replicas: 1
   strategy:
@@ -45,76 +45,14 @@ spec:
             "image": "fabric8/envsubst-file:1.0.0",
             "imagePullPolicy": "IfNotPresent",
             "args": [
-              "openfact-realm.json"
+              "demo-realm.json"
             ],
-            "env": [{
-              "name": "SYNC_URL",
-              "valueFrom": {
-                      "configMapKeyRef": {
-                          "name": "keycloak",
-                          "key": "sync.api.url"
-                      }
-                  }
-            },
-            {
-              "name": "KEYCLOAK_URL",
-              "valueFrom": {
-                      "configMapKeyRef": {
-                          "name": "keycloak",
-                          "key": "keycloak.url"
-                      }
-                  }
-            },
-            {
-              "name": "OPENFACT_URL",
-              "valueFrom": {
-                      "configMapKeyRef": {
-                          "name": "keycloak",
-                          "key": "openfact.url"
-                      }
-                  }
-            },
-            {
-              "name": "KEYCLOAK_PRIVATEKEY",
-              "valueFrom": {
-                      "secretKeyRef": {
-                          "name": "keycloak",
-                          "key": "kc.private.key"
-                      }
-                  }
-            },
-            {
-              "name": "KEYCLOAK_PUBLICKEY",
-              "valueFrom": {
-                      "secretKeyRef": {
-                          "name": "keycloak",
-                          "key": "kc.public.key"
-                      }
-                  }
-            },
-            {
-              "name": "KEYCLOAK_CLIENTID_SECRET",
-              "valueFrom": {
-                      "secretKeyRef": {
-                          "name": "keycloak",
-                          "key": "kc.clientid.secret"
-                      }
-                  }
-            },
-            {
-              "name": "K8S_API_SERVER",
-              "valueFrom": {
-                      "configMapKeyRef": {
-                          "name": "keycloak",
-                          "key": "apiserver.url"
-                      }
-                  }
-            }],
+            "env": [],
             "volumeMounts": [
             {
               "name": "keycloak-config",
-              "mountPath": "/workdir/openfact-realm.json",
-              "subPath": "config/openfact-realm.json"
+              "mountPath": "/workdir/demo-realm.json",
+              "subPath": "config/demo-realm.json"
             },
             {
               "name": "keycloak-subst-config",
@@ -145,7 +83,7 @@ spec:
         - -Djavax.net.ssl.trustStore=/opt/jboss/keycloak/standalone/configuration/tls/openshift-truststore.jks
         - -Dkeycloak.migration.action=import
         - -Dkeycloak.migration.provider=singleFile
-        - -Dkeycloak.migration.file=/opt/jboss/keycloak/standalone/configuration/import/openfact-realm.json
+        - -Dkeycloak.migration.file=/opt/jboss/keycloak/standalone/configuration/import/demo-realm.json
         - -Dkeycloak.migration.strategy=OVERWRITE_EXISTING
 
         env:
@@ -173,21 +111,6 @@ spec:
             secretKeyRef:
               name: keycloak
               key: kc.password
-        - name: KEYCLOAK_CLIENTID_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: keycloak
-              key: kc.clientid.secret
-        - name: KEYCLOAK_PRIVATEKEY
-          valueFrom:
-            secretKeyRef:
-              name: keycloak
-              key: kc.private.key
-        - name: KEYCLOAK_PUBLICKEY
-          valueFrom:
-            secretKeyRef:
-              name: keycloak
-              key: kc.public.key
         readinessProbe:
           httpGet:
             path: "/auth"
@@ -205,6 +128,8 @@ spec:
           mountPath: /opt/jboss/keycloak/standalone/configuration/tls
         - name: keycloak-subst-config
           mountPath: /opt/jboss/keycloak/standalone/configuration/import
+        - name: keycloak-theme
+          mountPath: /opt/jboss/keycloak/themes/fabric8
       volumes:
       - name: keycloak-tls
         emptyDir: {}
@@ -214,5 +139,7 @@ spec:
         configMap:
           name: keycloak
           items:
-          - key: openfact-realm.json
-            path: config/openfact-realm.json
+          - key: demo-realm.json
+            path: config/demo-realm.json
+      - name: keycloak-theme
+        emptyDir: {}

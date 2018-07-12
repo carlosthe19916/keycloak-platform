@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>io.github.carlosthe19916</groupId>
+        <artifactId>keycloak-platform</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>keycloak-platform-packages</artifactId>
+    <packaging>pom</packaging>
+
+    <name>Keycloak :: Platform :: Packages</name>
+
+    <modules>
+        <module>keycloak-system</module>
+    </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>fabric8-maven-plugin</artifactId>
+                <version>${fabric8.maven.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>fmp</id>
+                        <goals>
+                            <goal>resource</goal>
+                            <goal>helm</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

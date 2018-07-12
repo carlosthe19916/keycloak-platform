@@ -48,7 +48,7 @@ spec:
           }]
     spec:
       containers:
-      - image: fabric8/keycloak-postgres:${keycloak.version}
+      - image: carlosthe19916/keycloak-postgres:${keycloak.version}
         args:
         - -b $(INTERNAL_POD_IP)
         - -Djgroups.bind_addr=global

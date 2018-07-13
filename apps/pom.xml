@@ -16,6 +16,7 @@
     <modules>
         <module>keycloak</module>
         <module>keycloak-db</module>
+        <module>keycloak-db-small-crunchy</module>
     </modules>
 
     <build>

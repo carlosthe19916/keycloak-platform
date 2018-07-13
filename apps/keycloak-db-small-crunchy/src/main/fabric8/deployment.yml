@@ -1,0 +1,119 @@
+metadata:
+  name: keycloak-db
+  labels:
+    service: keycloak-db
+spec:
+  replicas: 1
+  selector:
+    service: keycloak-db
+  template:
+    metadata:
+      labels:
+        service: keycloak-db
+    spec:
+      securityContext:
+        supplementalGroups: [590]
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+      containers:
+      - name: keycloak-db
+        image: crunchydata/crunchy-postgres:centos7-9.6.9-1.8.3
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: PG_USER
+          value: keycloak
+        - name: PG_PASSWORD
+          value: keycloak
+        - name: PG_PRIMARY_USER
+          value: primaryuser
+        - name: PG_PRIMARY_PASSWORD
+          value: primarypassword
+        - name: PG_ROOT_PASSWORD
+          value: keycloak
+        - name: PG_DATABASE
+          value: keycloak
+        - name: PG_PRIMARY_PORT
+          value: "5432"
+        - name: PG_MODE
+          value: "primary"
+        - name: PGHOST
+          value: "/tmp"
+        - name: TEMP_BUFFERS
+          value: "9MB"
+        - name: MAX_CONNECTIONS
+          value: "20"
+        - name: SHARED_BUFFERS
+          value: "128MB"
+        - name: MAX_WAL_SENDERS
+          value: "10"
+        - name: WORK_MEM
+          value: "5MB"
+        - name: PGDATA_PATH_OVERRIDE
+          value: "keycloak-db"
+        - name: SYNC_REPLICA
+          value: ""
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        readinessProbe:
+          exec:
+            command:
+            - "/opt/cpm/bin/readiness.sh"
+          initialDelaySeconds: 40
+          timeoutSeconds: 2
+        livenessProbe:
+          exec:
+            command:
+            - "/opt/cpm/bin/liveness.sh"
+          initialDelaySeconds: 40
+          timeoutSeconds: 2
+        ports:
+        - containerPort: 5432
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /pgdata
+          name: keycloak-db-postgresql-data
+          readOnly: false
+        - mountPath: /pgconf
+          name: pgconf
+          readOnly: false
+        - mountPath: /pgwal
+          name: pgwal
+          readOnly: false
+        - mountPath: /backup
+          name: backup
+          readOnly: false
+        - mountPath: /recover
+          name: recover
+          readOnly: false
+        - mountPath: /backrestrepo
+          name: backrestrepo
+          readOnly: false
+        - mountPath: /sshd
+          name: sshd
+          readOnly: false
+      volumes:
+      - name: keycloak-db-postgresql-data
+        persistentVolumeClaim:
+          claimName: keycloak-db-postgresql-data
+      - name: pgconf
+        emptyDir:
+          medium: Memory
+      - name: pgwal
+        emptyDir:
+          medium: Memory
+      - name: backup
+        emptyDir:
+          medium: Memory
+      - name: recover
+        emptyDir:
+          medium: Memory
+      - name: backrestrepo
+        emptyDir:
+          medium: Memory
+      - name: sshd
+        emptyDir:
+          medium: Memory

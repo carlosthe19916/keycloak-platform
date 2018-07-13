@@ -55,7 +55,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <keycloak.version>bd08ae5</keycloak.version>
+        <keycloak.version>v15751c8</keycloak.version>
         <dependency-wait-service.version>v6632df1</dependency-wait-service.version>
 
         <fabric8.version>2.2.192</fabric8.version>

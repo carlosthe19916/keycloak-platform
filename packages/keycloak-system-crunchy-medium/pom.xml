@@ -3,21 +3,29 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>io.github.carlosthe19916</groupId>
-        <artifactId>keycloak-platform</artifactId>
+        <artifactId>keycloak-platform-packages</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>keycloak-platform-packages</artifactId>
-    <packaging>pom</packaging>
+    <groupId>io.github.carlosthe19916..packages</groupId>
+    <artifactId>keycloak-system-crunchy-medium</artifactId>
 
-    <name>Keycloak :: Platform :: Packages</name>
+    <name>Keycloak Platform :: Packages :: System</name>
+    <description>The Keycloak Microservices System</description>
 
-    <modules>
-        <module>keycloak-system</module>
-        <module>keycloak-system-crunchy-small</module>
-        <module>keycloak-system-crunchy-medium</module>
-    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>io.github.carlosthe19916</groupId>
+            <artifactId>keycloak</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.carlosthe19916</groupId>
+            <artifactId>keycloak-db-medium-crunchy</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
@@ -25,6 +33,13 @@
                 <groupId>io.fabric8</groupId>
                 <artifactId>fabric8-maven-plugin</artifactId>
                 <version>${fabric8.maven.plugin.version}</version>
+                <configuration>
+                    <enricher>
+                        <excludes>
+                            <exclude>fmp-controller</exclude>
+                        </excludes>
+                    </enricher>
+                </configuration>
                 <executions>
                     <execution>
                         <id>fmp</id>
@@ -37,4 +52,5 @@
             </plugin>
         </plugins>
     </build>
+
 </project>

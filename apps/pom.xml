@@ -16,8 +16,9 @@
     <modules>
         <module>keycloak</module>
         <module>keycloak-db</module>
-        <module>keycloak-db-small-crunchy</module>
-        <module>keycloak-db-medium-crunchy</module>
+        <!--<module>keycloak-db-crunchy-small</module>-->
+        <!--<module>keycloak-db-crunchy-medium</module>-->
+        <module>keycloak-db-openshift</module>
     </modules>
 
     <build>

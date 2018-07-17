@@ -1,0 +1,83 @@
+metadata:
+  name: keycloak-db
+  labels:
+    service: keycloak-db
+spec:
+  replicas: 1
+  selector:
+    service: keycloak-db
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        service: keycloak-db
+    spec:
+      containers:
+      - name: keycloak-db
+        image: 'openshift/postgresql'
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          capabilities: {}
+          privileged: false
+        terminationMessagePath: /dev/termination-log
+        env:
+        - name: POSTGRESQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: keycloak
+              key: db.name
+        - name: POSTGRESQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: keycloak
+              key: db.password
+        - name: POSTGRESQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: keycloak
+              key: db.user
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        livenessProbe:
+          exec:
+            command:
+              - /usr/libexec/check-container
+              - '--live'
+          initialDelaySeconds: 120
+          timeoutSeconds: 10
+        readinessProbe:
+          exec:
+            command:
+              - /usr/libexec/check-container
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+        resources:
+          limits:
+            memory: ${MEMORY_LIMIT}
+        ports:
+        - containerPort: 5432
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /var/lib/pgsql
+          name: keycloak-db-postgresql-data
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      volumes:
+      - name: keycloak-db-postgresql-data
+        persistentVolumeClaim:
+          claimName: keycloak-db-postgresql-data
+  triggers:
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - postgresql
+      from:
+        kind: ImageStreamTag
+        name: postgresql:${POSTGRESQL_VERSION}
+        namespace: ${NAMESPACE}
+      lastTriggeredImage: ""
+    type: ImageChange
+  - type: ConfigChange

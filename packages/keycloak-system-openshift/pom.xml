@@ -9,9 +9,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.github.carlosthe19916..packages</groupId>
-    <artifactId>keycloak-system-crunchy-medium</artifactId>
+    <artifactId>keycloak-system-openshift</artifactId>
 
-    <name>Keycloak Platform :: Packages :: System :: Crunchy :: Medium</name>
+    <name>Keycloak Platform :: Packages :: System :: Openshift</name>
     <description>The Keycloak Microservices System</description>
 
     <dependencies>
@@ -22,7 +22,7 @@
         </dependency>
         <dependency>
             <groupId>io.github.carlosthe19916</groupId>
-            <artifactId>keycloak-db-crunchy-medium</artifactId>
+            <artifactId>keycloak-db-openshift</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>

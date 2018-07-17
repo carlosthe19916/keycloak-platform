@@ -7,8 +7,8 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>keycloak-db-small-crunchy</artifactId>
-    <name>Keycloak Platform Apps :: Keycloak DB Crunchy Small</name>
+    <artifactId>keycloak-db-openshift</artifactId>
+    <name>Keycloak Platform Apps :: Keycloak DB Openshift</name>
     <description>Keycloak for use with postgresql</description>
 
     <build>

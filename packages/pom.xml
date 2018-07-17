@@ -15,8 +15,9 @@
 
     <modules>
         <module>keycloak-system</module>
-        <module>keycloak-system-crunchy-small</module>
-        <module>keycloak-system-crunchy-medium</module>
+        <!--<module>keycloak-system-crunchy-small</module>-->
+        <!--<module>keycloak-system-crunchy-medium</module>-->
+        <module>keycloak-system-openshift</module>
     </modules>
 
     <build>

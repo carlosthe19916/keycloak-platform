@@ -47,7 +47,17 @@ spec:
             "args": [
               "demo-realm.json"
             ],
-            "env": [],
+            "env": [
+              {
+                "name": "KEYCLOAK_LOGIN_THEME",
+                "valueFrom": {
+                  "configMapKeyRef": {
+                    "name": "keycloak",
+                    "key": "keycloak.theme.name"
+                  }
+                }
+              }
+            ],
             "volumeMounts": [
             {
               "name": "keycloak-config",
@@ -179,7 +189,15 @@ spec:
               name: keycloak
               key: kc.password
         - name: KEYCLOAK_THEME_REPO
-          value: ${KEYCLOAK_THEME_REPO}
+          valueFrom:
+            configMapKeyRef:
+              name: keycloak
+              key: keycloak.theme.repo
+        - name: KEYCLOAK_THEME_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: keycloak
+              key: keycloak.theme.name
         readinessProbe:
           httpGet:
             path: "/auth"
@@ -203,7 +221,7 @@ spec:
         - name: keycloak-subst-config
           mountPath: /opt/jboss/keycloak/standalone/configuration/import
         - name: keycloak-theme
-          mountPath: /opt/jboss/keycloak/themes/fabric8
+          mountPath: /opt/jboss/keycloak/themes/${KEYCLOAK_THEME_NAME}
       volumes:
       - name: keycloak-tls
         emptyDir: {}

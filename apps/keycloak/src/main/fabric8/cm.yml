@@ -5,11 +5,13 @@ metadata:
 data:
   db.url: ${POSTGRES_HOSTNAME}
   db.port: ${POSTGRES_HOST_PORT}
+  keycloak.theme.name: ${KEYCLOAK_THEME_NAME}
+  keycloak.theme.repo: ${KEYCLOAK_THEME_REPO}
   demo-realm.json: |-
     {
       "realm": "demo",
       "enabled": true,
-      "loginTheme": "fabric8",
+      "loginTheme": "${KEYCLOAK_LOGIN_THEME}",
       "sslRequired": "external",
       "accessTokenLifespan" : 2592000,
       "accessTokenLifespanForImplicitFlow" : 1296000,

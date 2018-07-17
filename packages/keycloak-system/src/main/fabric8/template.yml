@@ -21,8 +21,7 @@ parameters:
   generate: expression
   name: KEYCLOAK_USER
 - description: Keycloak admin user
-  from: '[A-Z0-9]{8}'
-  generate: expression
+  value: admin
   name: KEYCLOAK_PASSWORD
 - description: Keycloak operating mode (standalone, clustered)
   value: standalone
@@ -32,3 +31,7 @@ parameters:
   required: true
   value: https://github.com/fabric8io/fabric8-keycloak-theme.git
   name: KEYCLOAK_THEME_REPO
+- description: Keycloak theme name
+  required: true
+  value: carlosthe19916
+  name: KEYCLOAK_THEME_NAME

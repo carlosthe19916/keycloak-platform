@@ -92,7 +92,7 @@ spec:
         - "/bin/bash"
         args:
         - -c
-        - rm -rf /keycloak-theme && git clone ${KEYCLOAK_THEME_REPO} /keycloak-theme && cd /keycloak-theme
+        - rm -rf /keycloak-theme/* && git clone ${KEYCLOAK_THEME_REPO} /keycloak-theme && cd /keycloak-theme
         volumeMounts:
         - name: keycloak-theme
           mountPath: "/keycloak-theme"

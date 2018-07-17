@@ -1,8 +1,43 @@
 kind: Template
+message: You've created a keycloak server
 parameters:
-- name: APISERVER_HOSTPORT
-- name: NODE_IP
-- name: EXPOSER
-- name: DOMAIN
-- name: HTTP
-- name: TLS_ACME
+- description: Postgres hostname
+  required: true
+  value: "keycloak-db"
+  name: POSTGRES_HOSTNAME
+- description: Postgres host port
+  required: true
+  value: "5432"
+  name: POSTGRES_HOST_PORT
+- description: Postgres database
+  required: true
+  value: "keycloak"
+  name: POSTGRES_DATABASE
+- description: Postgres user
+  required: true
+  value: "keycloak"
+  name: POSTGRES_USER
+- description: Postgres password
+  required: true
+  value: "keycloak"
+  name: POSTGRES_PASSWORD
+- description: Keycloak admin user
+  required: true
+  value: admin
+  name: KEYCLOAK_USER
+- description: Keycloak admin password
+  from: '[A-Z0-9]{8}'
+  generate: expression
+  name: KEYCLOAK_PASSWORD
+- description: Keycloak operating mode (standalone, clustered)
+  required: true
+  value: standalone
+  name: OPERATING_MODE
+- description: Keycloak theme repository
+  required: true
+  value: https://github.com/carlosthe19916/keycloak-themes.git
+  name: KEYCLOAK_THEME_REPO
+- description: Keycloak theme name
+  required: true
+  value: carlosthe19916
+  name: KEYCLOAK_THEME_NAME

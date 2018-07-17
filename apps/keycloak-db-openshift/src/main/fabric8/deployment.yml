@@ -6,8 +6,6 @@ spec:
   replicas: 1
   selector:
     service: keycloak-db
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
@@ -17,10 +15,6 @@ spec:
       - name: keycloak-db
         image: 'openshift/postgresql'
         imagePullPolicy: IfNotPresent
-        securityContext:
-          capabilities: {}
-          privileged: false
-        terminationMessagePath: /dev/termination-log
         env:
         - name: POSTGRESQL_DATABASE
           valueFrom:
@@ -61,10 +55,8 @@ spec:
         - containerPort: 5432
           protocol: TCP
         volumeMounts:
-        - mountPath: /var/lib/pgsql
+        - mountPath: /var/lib/pgsql/data
           name: keycloak-db-postgresql-data
-      dnsPolicy: ClusterFirst
-      restartPolicy: Always
       volumes:
       - name: keycloak-db-postgresql-data
         persistentVolumeClaim:

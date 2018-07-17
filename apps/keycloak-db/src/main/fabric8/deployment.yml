@@ -57,9 +57,8 @@ spec:
         - containerPort: 5432
           protocol: TCP
         volumeMounts:
-        - mountPath: /var/lib/pgsql
+        - mountPath: /var/lib/pgsql/data
           name: keycloak-db-postgresql-data
-          readOnly: false
       volumes:
       - name: keycloak-db-postgresql-data
         persistentVolumeClaim:

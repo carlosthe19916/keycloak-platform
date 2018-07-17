@@ -22,20 +22,32 @@ spec:
         image: crunchydata/crunchy-postgres:centos7-9.6.9-1.8.3
         imagePullPolicy: IfNotPresent
         env:
-        - name: PG_USER
-          value: keycloak
-        - name: PG_PASSWORD
-          value: keycloak
         - name: PG_PRIMARY_USER
-          value: primaryuser
+          value: postgres
         - name: PG_PRIMARY_PASSWORD
-          value: primarypassword
+          value: password
         - name: PG_ROOT_PASSWORD
-          value: keycloak
-        - name: PG_DATABASE
-          value: keycloak
+          value: password
         - name: PG_PRIMARY_PORT
-          value: "5432"
+          valueFrom:
+            configMapKeyRef:
+              name: keycloak
+              key: db.port
+        - name: PG_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: keycloak
+              key: db.name
+        - name: PG_USER
+          valueFrom:
+            secretKeyRef:
+              name: keycloak
+              key: db.user
+        - name: PG_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: keycloak
+              key: db.password
         - name: PG_MODE
           value: "primary"
         - name: PGHOST

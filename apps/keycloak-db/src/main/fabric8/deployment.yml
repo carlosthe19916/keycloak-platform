@@ -17,11 +17,20 @@ spec:
         imagePullPolicy: IfNotPresent
         env:
         - name: POSTGRESQL_DATABASE
-          value: keycloak
+          valueFrom:
+            secretKeyRef:
+              name: keycloak
+              key: db.name
         - name: POSTGRESQL_PASSWORD
-          value: keycloak
+          valueFrom:
+            secretKeyRef:
+              name: keycloak
+              key: db.password
         - name: POSTGRESQL_USER
-          value: keycloak
+          valueFrom:
+            secretKeyRef:
+              name: keycloak
+              key: db.user
         - name: POD_IP
           valueFrom:
             fieldRef:

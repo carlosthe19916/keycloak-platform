@@ -1,4 +1,5 @@
 kind: Template
+message: You've created a keycloak server
 parameters:
 - description: Postgres hostname
   value: "keycloak-db"
@@ -26,3 +27,8 @@ parameters:
 - description: Keycloak operating mode (standalone, clustered)
   value: standalone
   name: OPERATING_MODE
+- description: Keycloak theme repository
+  displayName: Git repository URL
+  required: true
+  value: https://github.com/fabric8io/fabric8-keycloak-theme.git
+  name: KEYCLOAK_THEME_REPO

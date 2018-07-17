@@ -56,7 +56,7 @@ spec:
         - -Dkeycloak.migration.action=import
         - -Dkeycloak.migration.provider=singleFile
         - -Dkeycloak.migration.file=/opt/jboss/keycloak/standalone/configuration/import/demo-realm.json
-        - -Dkeycloak.migration.strategy=OVERWRITE_EXISTING
+        - -Dkeycloak.migration.strategy=IGNORE_EXISTING
         env:
         - name: POSTGRES_HOSTNAME
           value: keycloak-db
@@ -97,6 +97,8 @@ spec:
         volumeMounts:
         - name: keycloak-subst-config
           mountPath: /opt/jboss/keycloak/standalone/configuration/import
+        - name: keycloak-theme
+          mountPath: /opt/jboss/keycloak/themes/fabric8
       volumes:
       - name: keycloak-subst-config
         emptyDir: {}

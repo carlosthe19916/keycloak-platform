@@ -1,8 +1,28 @@
 kind: Template
 parameters:
-- name: APISERVER_HOSTPORT
-- name: NODE_IP
-- name: EXPOSER
-- name: DOMAIN
-- name: HTTP
-- name: TLS_ACME
+- description: Postgres hostname
+  value: "keycloak-db"
+  name: POSTGRES_HOSTNAME
+- description: Postgres host port
+  value: "5432"
+  name: POSTGRES_HOST_PORT
+- description: Postgres database
+  value: "keycloak"
+  name: POSTGRES_DATABASE
+- description: Postgres user
+  value: "keycloak"
+  name: POSTGRES_USER
+- description: Postgres password
+  value: "keycloak"
+  name: POSTGRES_PASSWORD
+- description: Keycloak admin user
+  from: '[A-Z0-9]{8}'
+  generate: expression
+  name: KEYCLOAK_USER
+- description: Keycloak admin user
+  from: '[A-Z0-9]{8}'
+  generate: expression
+  name: KEYCLOAK_PASSWORD
+- description: Keycloak operating mode (standalone, clustered)
+  value: standalone
+  name: OPERATING_MODE

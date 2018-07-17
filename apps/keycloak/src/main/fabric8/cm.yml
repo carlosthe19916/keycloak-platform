@@ -3,8 +3,8 @@ metadata:
     expose.config.keycloak.io/apiserver-url-key: apiserver.url
     expose.service-key.config.keycloak.io/keycloak: keycloak.url
 data:
-  db.url: keycloak-db
-  db.port: "5432"
+  db.url: ${POSTGRES_HOSTNAME}
+  db.port: ${POSTGRES_HOST_PORT}
   demo-realm.json: |-
     {
       "realm": "demo",

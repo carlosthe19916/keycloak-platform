@@ -1,0 +1,6 @@
+spec:
+  to:
+    kind: Service
+    name: "sso"
+  tls:
+    termination: edge

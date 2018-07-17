@@ -81,8 +81,8 @@ spec:
         command:
         - "/bin/bash"
         args:
-        - "-c"
-        - "rm -rf /keycloak-theme/login && git clone https://github.com/fabric8io/fabric8-keycloak-theme.git /keycloak-theme/login && cd /keycloak-theme/login && git checkout 61b08f0a2f4be2395bb0bbb6d16a8538f4f2b836"
+        - -c
+        - rm -rf /keycloak-theme/login && git clone https://github.com/fabric8io/fabric8-keycloak-theme.git /keycloak-theme/login && cd /keycloak-theme/login && git checkout 61b08f0a2f4be2395bb0bbb6d16a8538f4f2b836
         volumeMounts:
         - name: keycloak-theme
           mountPath: "/keycloak-theme"
@@ -90,14 +90,14 @@ spec:
         image: jimmidyson/pemtokeystore:v0.2.0
         imagePullPolicy: IfNotPresent
         args:
-        - "-keystore"
-        - "/tls-keystore/openshift-truststore.jks"
-        - "-ca-file"
-        - "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
-        - "-ca-file"
-        - "/var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt"
-        - "-ca-dir"
-        - "/usr/share/ca-certificates/mozilla"
+        - -keystore
+        - /tls-keystore/openshift-truststore.jks
+        - -ca-file
+        - /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        - -ca-file
+        - /var/run/secrets/kubernetes.io/serviceaccount/service-ca.crt
+        - -ca-dir
+        - /usr/share/ca-certificates/mozilla
         volumeMounts:
         - name: keycloak-tls
           mountPath: "/tls-keystore"
@@ -105,7 +105,7 @@ spec:
         image: fabric8/envsubst-file:1.0.0
         imagePullPolicy: IfNotPresent
         args:
-        - "demo-realm.json"
+        - demo-realm.json
         env: []
         volumeMounts:
         - name: keycloak-config
@@ -135,19 +135,35 @@ spec:
         - -Dkeycloak.migration.action=import
         - -Dkeycloak.migration.provider=singleFile
         - -Dkeycloak.migration.file=/opt/jboss/keycloak/standalone/configuration/import/demo-realm.json
-        - -Dkeycloak.migration.strategy=OVERWRITE_EXISTING
-
+        - -Dkeycloak.migration.strategy=IGNORE_EXISTING
         env:
-        - name: POSTGRES_HOSTNAME
-          value: keycloak-db
-        - name: POSTGRES_USER
-          value: keycloak
-        - name: POSTGRES_PASSWORD
-          value: keycloak
-        - name: OPERATING_MODE
-          value: standalone
         - name: POSTGRES_PORT_5432_TCP_ADDR
-          value: keycloak-db
+          valueFrom:
+            configMapKeyRef:
+              name: keycloak
+              key: db.url
+        - name: POSTGRES_PORT_5432_TCP_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: keycloak
+              key: db.port
+        - name: POSTGRES_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: keycloak
+              key: db.name
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: keycloak
+              key: db.user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: keycloak
+              key: db.password
+        - name: OPERATING_MODE
+          value: ${OPERATING_MODE}
         - name: INTERNAL_POD_IP
           valueFrom:
             fieldRef:
@@ -174,6 +190,11 @@ spec:
             port: 8080
           initialDelaySeconds: 60
           timeoutSeconds: 10
+        resources:
+          requests:
+            memory: 500Mi
+          limits:
+            memory: 1Gi
         volumeMounts:
         - name: keycloak-tls
           mountPath: /opt/jboss/keycloak/standalone/configuration/tls

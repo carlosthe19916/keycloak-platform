@@ -198,6 +198,8 @@ spec:
             configMapKeyRef:
               name: keycloak
               key: keycloak.theme.name
+        - name: KEYCLOAK_WELCOME_THEME
+          value: keycloak
         readinessProbe:
           httpGet:
             path: "/auth"

@@ -59,6 +59,7 @@ spec:
         volumeMounts:
         - mountPath: /var/lib/pgsql/data
           name: keycloak-db-postgresql-data
+          readOnly: false
       volumes:
       - name: keycloak-db-postgresql-data
         persistentVolumeClaim:

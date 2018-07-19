@@ -55,7 +55,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <keycloak.version>vb3ada66</keycloak.version>
+        <keycloak.version>vd44634d</keycloak.version>
 
         <fabric8.version>2.2.192</fabric8.version>
         <fabric8.maven.plugin.version>3.5.39</fabric8.maven.plugin.version>

@@ -1,6 +1,10 @@
 kind: Template
 message: You've created a keycloak server
 parameters:
+- description: Postgres storage
+  required: true
+  value: "2Gi"
+  name: POSTGRES_STORAGE
 - description: Postgres hostname
   required: true
   value: "keycloak-db"
